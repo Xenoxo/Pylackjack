@@ -8,7 +8,7 @@ class DeckOfCards:
             card_suit = ["S", "H", "D", "C"]
             card = {
                     "id" : value_num,
-                    "name" : f"{card_value[value_num]} {card_suit[suit_num]}",
+                    "name" : f"{card_value[value_num]}|{card_suit[suit_num]}",
                     "value" : card_value[value_num],
                     "suit" : card_suit[suit_num],
                 }
