@@ -3,7 +3,8 @@ from deckofcards import DeckOfCards
 
 print("\nWelcome to the Blackjack game!")
 
-#gamestart = input("\nDo you want to play? (y/n?) ")
+#       BELOW CODE IS FOR PROPER GAME FORMAT
+# gamestart = input("\nDo you want to play? (y/n?) ")
 #
 # if gamestart == "y":
 #     the_deck = DeckOfCards()
@@ -15,6 +16,8 @@ print("\nWelcome to the Blackjack game!")
 #     print("Thanks for playing!")
 # else:
 #     print("Cya Space Cowboy")
+
+
 player_hand = []
 player_choice = ""
 the_deck = DeckOfCards() 
