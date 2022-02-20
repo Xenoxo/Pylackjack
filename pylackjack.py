@@ -1,3 +1,4 @@
+from calendar import TUESDAY
 from deckofcards import DeckOfCards
 
 print("\nWelcome to the Blackjack game!")
@@ -14,13 +15,26 @@ print("\nWelcome to the Blackjack game!")
 #     print("Thanks for playing!")
 # else:
 #     print("Cya Space Cowboy")
-
+player_hand = []
 player_choice = ""
+the_deck = DeckOfCards() 
 while player_choice != "q":
-    the_deck = DeckOfCards() 
+
+    if player_choice == "count":
+        print(the_deck.count())    
+
     card = the_deck.draw()
-    print(f"You drew a {card}!\n")
-    player_choice = input("again? ")
+    if card != False:
+        player_hand.append(card)
+        print(f"\nYou drew a {card}!")
+    
+    if player_hand == False:
+        print("\nYour hand is currently empty")
+    else:
+        print(f"Your had is: ")
+        for card in player_hand:
+            print(f"{card}", end="  ")
+    player_choice = input("\nagain? ")
 
 
 # print(f"count is {the_deck.count()}")
