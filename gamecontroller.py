@@ -4,11 +4,7 @@ class GameController:
 
     def __init__(self, bankroll = 500):
         self.game_over = False
-        self.bankroll = bankroll
         self.player_base = ["player", "dealer"]
-
-    def get_bankroll(self):
-        return self.bankroll
 
     def next_player(self):
         return self.player_base
