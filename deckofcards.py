@@ -23,6 +23,9 @@ class DeckOfCards:
         """
         return len(self.deck)
     
+    def shuffle(self):
+        self.deck = [self.func(x % 13 , x // 13) for x in range(52)]
+    
     def func(self, value_num, suit_num):
         """
         Generates each card for the deck

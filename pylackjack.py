@@ -1,3 +1,4 @@
+from numpy import empty
 import gamecontroller as gc 
 from gamecontroller import GameController
 from deckofcards import DeckOfCards
@@ -5,9 +6,11 @@ from deckofcards import DeckOfCards
 
 def main():
     gc = GameController()
-    the_deck = DeckOfCards()
-    print(gc.bankroll)
-
+    the_deck = DeckOfCards()    
+    
+    #print(the_deck)
+    #print(gc.bankroll)
+    
     player_hand = []
     dealer_hand = []
     player_card_value_sum = 0
@@ -17,11 +20,11 @@ def main():
 
     print("\nWelcome to the Blackjack game!")
 
-    while (player_choice != "q" and gc.game_over == False):
+    while (player_choice != "quit" and gc.game_over == False):
 
-   ####### DEAL CARDS
+        ### DEALS OUT CARDS FOR DEALER AND PLAYER
         while len(dealer_hand) < 2:
-
+  
         #deal to player
             player_card = the_deck.draw()
             print(f"\nYou drew a {player_card['name']}!")
@@ -34,8 +37,7 @@ def main():
             dealer_hand.append(dealer_card)
             dealer_card_value_sum += dealer_card['value']            
         
-        #summarize DEALER hands
-
+        #summarize DEALER's hand
         print("\nThe DEALER is showing: ")
         for card in dealer_hand:
             print(f"{card['name']}", end="  ")
@@ -46,22 +48,20 @@ def main():
             print(f"Dealer has a total of {dealer_card_value_sum}, a BLACKJACK! Tough luck!")
             break
 
-        #summarize player hand
+        #summarize PLAYER's hand
         print("\n\nYour hand is: ")
         for card in player_hand:
             print(f"{card['name']}", end="  ")
         print(f"\nYour hand totals: {player_card_value_sum}")
         
-        #check player
+        #check player Blackjack
         if player_card_value_sum == 21:
             print(f"You got a blackjack with {player_card_value_sum}!")
             break
 
 
-        #player choice after cards are dealt
-
+        #PLAYER choice after cards are dealt
         player_choice = input("\nDo you want to \"hit\" or \"stay\"? ")
-        
         while player_choice != "stay" and player_card_value_sum < 21:
             
             player_card = the_deck.draw()
@@ -74,61 +74,55 @@ def main():
             for card in player_hand:
                 print(f"{card['name']}", end="  ")
             print(f"\nYour hand totals: {player_card_value_sum}")
-
+            
+        #PLAYER choice
             if player_card_value_sum < 21:
                 player_choice = input("\nHit or Stay? ")
-
+        
         if player_card_value_sum > 21:
             print("\nYOU BUST! ")
             break
-        
+
+  
+        #Deal rest for DEALER
         while dealer_card_value_sum < 17:
-        #deal dealer
             dealer_card = the_deck.draw()
             print(f"\nDealer drew a {dealer_card['name']}!")
             dealer_hand.append(dealer_card)
             dealer_card_value_sum += dealer_card['value']            
         
-        if dealer_card_value_sum > 21:
-            print("\nDEALER BUSTS! YOU WIN!!!!! ")
-            break
-
-
+        #Check dealer bust
+        if dealer_card_value_sum <= 21:
+       
         #summarize DEALER hands
-
-        print("\nThe DEALER is showing: ")
-        for card in dealer_hand:
-            print(f"{card['name']}", end="  ")
-        print(f"\nDEALER hand totals: {dealer_card_value_sum}")            
+            print("\nThe DEALER is showing: ")
+            for card in dealer_hand:
+                print(f"{card['name']}", end="  ")
+            print(f"\nDEALER hand totals: {dealer_card_value_sum}")            
         
-        if dealer_card_value_sum > player_card_value_sum:
-            print(f"\nYour {player_card_value_sum} is less than the DEALER's {dealer_card_value_sum}, you lose")
-        elif dealer_card_value_sum == player_card_value_sum:
-            print(f"\nYour {player_card_value_sum} is the same as the DEALER's {dealer_card_value_sum}, a PUSH!")     
+            if dealer_card_value_sum > player_card_value_sum:
+                print(f"\nYour {player_card_value_sum} is less than the DEALER's {dealer_card_value_sum}, you lose")
+            elif dealer_card_value_sum == player_card_value_sum:
+                print(f"\nYour {player_card_value_sum} is the same as the DEALER's {dealer_card_value_sum}, a PUSH!")     
+            else:
+                print(f"\nYour {player_card_value_sum} is greater than the DEALER's {dealer_card_value_sum}, you WIN!")                       
+        elif dealer_card_value_sum > 21: 
+            print("\nDEALER BUSTS! YOU WIN!!!!! ")
         else:
-            print(f"\nYour {player_card_value_sum} is greater than the DEALER's {dealer_card_value_sum}, you WIN!")                       
-        
-        
-        break
-"""
-        # temp function to check deck size
-        if player_choice == "count":
-            print(the_deck.count())    
+            print(f"THIS IS WEIRD!!!! The dealer hand value is {dealer_card_value_sum}" )
+            
+       
+      #  print(f"{the_deck.count()} CARDS NOW!!!!!!!")
 
-        card = the_deck.draw() # draws a card
-
-        if card != False: # meaning there are still cards left in the deck
-            player_hand.append(card)
-            print(f"\nYou drew a {card}!")
-        
-        if player_hand == False:
-            print("\nYour hand is currently empty")
-        else:
-            print(f"Your had is: ")
-            for card in player_hand:
-                print(f"{card}", end="  ")
-        player_choice = input("\nagain? ")
-"""
+        player_choice = input("\nDo you want to play again? \"yes\" or \"no\"? ")
+        if player_choice == "no":
+            print("\n\n\nThanks for playing!!!\n\n\n")
+            break
+        the_deck.shuffle()
+        player_hand = []
+        dealer_hand = []
+        player_card_value_sum = 0
+        dealer_card_value_sum = 0        
 
 if __name__ == '__main__':
     main()
