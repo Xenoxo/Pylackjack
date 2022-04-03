@@ -5,18 +5,22 @@ from deckofcards import DeckOfCards
 #from test_deck_of_cards import TestDeckOfCards
 
 def main():
+    global player_hand
+    global player_choice
+    global dealer_hand
+    global player_card_value_sum
+    global dealer_card_value_sum
+
     gc = GameController()
     the_deck = DeckOfCards()    
     
     #print(the_deck)
     #print(gc.bankroll)
-    
     player_hand = []
     dealer_hand = []
     player_card_value_sum = 0
     dealer_card_value_sum = 0
     player_choice = ""
-    sum = 0
 
     print("\nWelcome to the Blackjack game!")
 
@@ -49,10 +53,7 @@ def main():
             break
 
         #summarize PLAYER's hand
-        print("\n\nYour hand is: ")
-        for card in player_hand:
-            print(f"{card['name']}", end="  ")
-        print(f"\nYour hand totals: {player_card_value_sum}")
+        summarize_hand("PLAYER")
         
         #check player Blackjack
         if player_card_value_sum == 21:
@@ -67,13 +68,9 @@ def main():
             player_card = the_deck.draw()
             print(f"\nYou drew a {player_card['name']}!")
             player_hand.append(player_card)
-            player_card_value_sum += player_card['value']            
-
-          #summarize player hand
-            print("Your hand is: ")
-            for card in player_hand:
-                print(f"{card['name']}", end="  ")
-            print(f"\nYour hand totals: {player_card_value_sum}")
+            player_card_value_sum += player_card['value']                      
+            
+            summarize_hand("PLAYER") #summarize player hand
             
         #PLAYER choice
             if player_card_value_sum < 21:
@@ -122,7 +119,25 @@ def main():
         player_hand = []
         dealer_hand = []
         player_card_value_sum = 0
-        dealer_card_value_sum = 0        
+        dealer_card_value_sum = 0
+
+def summarize_hand(character):
+        actor = ""
+        temp_hand = []
+        temp_hand_sum_value = 0
+        if character == "PLAYER":
+            actor = "Your"
+            temp_hand = player_hand
+            temp_hand_sum_value = player_card_value_sum
+        elif character == "DEALER":
+            actor = "Dealer\'s"
+            temp_hand = dealer_hand
+            temp_hand_sum_value = dealer_card_value_sum
+        print(f"\n\n{actor} hand is: ")
+        for card in temp_hand:
+            print(f"{card['name']}", end="  ")
+        print(f"\n{actor} hand totals: {temp_hand_sum_value}")
+
 
 if __name__ == '__main__':
     main()
