@@ -22,8 +22,9 @@ def main():
     dealer_card_value_sum = 0
     player_choice = ""
 
-    print("\nWelcome to the Blackjack game!")
-
+    print("\nWelcome to the Blackjack game!\n")
+    
+    """MAIN GAME WHILE LOOP"""    
     while (player_choice != "quit" and gc.game_over == False):
 
         ### DEALS OUT CARDS FOR DEALER AND PLAYER
@@ -41,11 +42,7 @@ def main():
             dealer_hand.append(dealer_card)
             dealer_card_value_sum += dealer_card['value']            
         
-        #summarize DEALER's hand
-        print("\nThe DEALER is showing: ")
-        for card in dealer_hand:
-            print(f"{card['name']}", end="  ")
-        print(f"\nDEALER hand totals: {dealer_card_value_sum}")            
+        summarize_hand("DEALER") #summarize DEALER's hand
         
         #check dealer Blackjack
         if dealer_card_value_sum == 21:
@@ -79,7 +76,6 @@ def main():
         if player_card_value_sum > 21:
             print("\nYOU BUST! ")
             break
-
   
         #Deal rest for DEALER
         while dealer_card_value_sum < 17:
@@ -90,13 +86,8 @@ def main():
         
         #Check dealer bust
         if dealer_card_value_sum <= 21:
-       
-        #summarize DEALER hands
-            print("\nThe DEALER is showing: ")
-            for card in dealer_hand:
-                print(f"{card['name']}", end="  ")
-            print(f"\nDEALER hand totals: {dealer_card_value_sum}")            
-        
+            summarize_hand("DEALER") #summarize DEALER hands
+     
             if dealer_card_value_sum > player_card_value_sum:
                 print(f"\nYour {player_card_value_sum} is less than the DEALER's {dealer_card_value_sum}, you lose")
             elif dealer_card_value_sum == player_card_value_sum:
@@ -133,7 +124,9 @@ def summarize_hand(character):
             actor = "Dealer\'s"
             temp_hand = dealer_hand
             temp_hand_sum_value = dealer_card_value_sum
-        print(f"\n\n{actor} hand is: ")
+        
+        # summarizes the hand for corresponding actor
+        print(f"\n\n{actor} hand is: ") 
         for card in temp_hand:
             print(f"{card['name']}", end="  ")
         print(f"\n{actor} hand totals: {temp_hand_sum_value}")
