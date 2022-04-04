@@ -15,16 +15,8 @@ player_choice = ""
 the_deck = DeckOfCards()    
 
 def main():
-    global player_hand, player_choice
-    global dealer_hand
-    global player_card_value_sum
-    global dealer_card_value_sum
-    global the_deck
-
+    global player_hand, player_choice, dealer_hand, player_card_value_sum, dealer_card_value_sum, the_deck
     gc = GameController()
-
-
-
     print("\nWelcome to the Blackjack game!\n")
     
     """MAIN GAME WHILE LOOP"""    
@@ -40,45 +32,33 @@ def main():
         #check dealer Blackjack
         if dealer_card_value_sum == 21:
             print(f"Dealer has a total of {dealer_card_value_sum}, a BLACKJACK! Tough luck!")
-            break
+            gc.game_over = True
 
-        #summarize PLAYER's hand
-        summarize_hand("PLAYER")
-        
         #check player Blackjack
-        if player_card_value_sum == 21:
+        if player_card_value_sum == 21 and gc.game_over == False:
             print(f"You got a blackjack with {player_card_value_sum}!")
-            break
+            gc.game_over = True
+        else:
+            summarize_hand("PLAYER") #summarize PLAYER's hand
 
-
-        #PLAYER choice after cards are dealt
+        """PLAYER choice loop after cards are dealt"""
         player_choice = input("\nDo you want to \"hit\" or \"stay\"? ")
-        while player_choice != "stay" and player_card_value_sum < 21:
-            
-            player_card = the_deck.draw()
-            print(f"\nYou drew a {player_card['name']}!")
-            player_hand.append(player_card)
-            player_card_value_sum += player_card['value']                      
-            
+        while player_choice != "stay" and player_card_value_sum < 21 and gc.game_over == False:
+            draw_card_action("PLAYER")           
             summarize_hand("PLAYER") #summarize player hand
-            
-        #PLAYER choice
-            if player_card_value_sum < 21:
+            if player_card_value_sum < 21: #player choice
                 player_choice = input("\nHit or Stay? ")
         
-        if player_card_value_sum > 21:
-            print("\nYOU BUST! ")
-            break
+        if player_card_value_sum > 21 and gc.game_over == False:
+            print(f"\nYOU BUST with a {player_card_value_sum}! ")
+            gc.game_over = True
   
-        #Deal rest for DEALER
-        while dealer_card_value_sum < 17:
-            dealer_card = the_deck.draw()
-            print(f"\nDealer drew a {dealer_card['name']}!")
-            dealer_hand.append(dealer_card)
-            dealer_card_value_sum += dealer_card['value']            
+        #Deal remaining cards for DEALER
+        while dealer_card_value_sum < 17 and gc.game_over == False:
+            draw_card_action("DEALER")          
         
         #Check dealer bust
-        if dealer_card_value_sum <= 21:
+        if dealer_card_value_sum <= 21 and gc.game_over == False:
             summarize_hand("DEALER") #summarize DEALER hands
      
             if dealer_card_value_sum > player_card_value_sum:
@@ -87,9 +67,9 @@ def main():
                 print(f"\nYour {player_card_value_sum} is the same as the DEALER's {dealer_card_value_sum}, a PUSH!")     
             else:
                 print(f"\nYour {player_card_value_sum} is greater than the DEALER's {dealer_card_value_sum}, you WIN!")                       
-        elif dealer_card_value_sum > 21: 
+        elif dealer_card_value_sum > 21 and gc.game_over == False: 
             print("\nDEALER BUSTS! YOU WIN!!!!! ")
-        else:
+        elif gc.game_over == False:
             print(f"THIS IS WEIRD!!!! The dealer hand value is {dealer_card_value_sum}" )
             
        
@@ -99,11 +79,13 @@ def main():
         if player_choice == "no":
             print("\n\n\nThanks for playing!!!\n\n\n")
             break
+
         the_deck.shuffle()
         player_hand = []
         dealer_hand = []
         player_card_value_sum = 0
         dealer_card_value_sum = 0
+        gc.game_over = False
 
 def draw_card_action(character):
     global the_deck, player_hand, player_card_value_sum, dealer_hand, dealer_card_value_sum
