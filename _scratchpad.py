@@ -12,6 +12,27 @@ while the game is going (player has money, player hasn't quit, enough cards are 
     compare cards
     w/l/p => update counters scores and money
 
+
+
+                print("\nThe DEALER is showing: ")
+            for card in dealer_hand:
+                print(f"{card['name']}", end="  ")
+            print(f"\nDEALER hand totals: {dealer_card_value_sum}")   
+
+  
+        #deal to player
+            player_card = the_deck.draw()
+            print(f"\nYou drew a {player_card['name']}!")
+            player_hand.append(player_card)
+            player_card_value_sum += player_card['value']      
+     
+
+        #deal dealer
+            dealer_card = the_deck.draw()
+            print(f"\nDealer drew a {dealer_card['name']}!")
+            dealer_hand.append(dealer_card)
+            dealer_card_value_sum += dealer_card['value']     
+
 """
 
 
