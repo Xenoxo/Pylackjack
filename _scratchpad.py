@@ -1,3 +1,14 @@
+
+
+
+a = 1
+b = 2
+c = 3
+
+if a == 0 or a ==1 and b == 2:
+    print("GUH")
+
+
 """
 
 while the game is going (player has money, player hasn't quit, enough cards are left in deck[>12 b/c 12 is all A's, 2's and 3's])
