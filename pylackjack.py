@@ -43,14 +43,16 @@ def main():
                     player_choice = input("\nHit or Stay? ")
                 check_current_hand("PLAYER", player_card_value_sum)
   
+        summarize_hand('DEALER', True)
         #Deal remaining cards for DEALER
         while dealer_card_value_sum < 17 and gc.game_over == False:
             draw_card_action("DEALER")
-            check_current_hand("DEALER", dealer_card_value_sum)    
+            check_current_hand("DEALER", dealer_card_value_sum)
         
         #Resolve player and dealer hand
         if dealer_card_value_sum <= 21 and gc.game_over == False:
-            summarize_hand("DEALER") #summarize DEALER hands
+            summarize_hand("DEALER", True) #summarize DEALER hands
+            print("\n\n=== FINAL RESULT === \n")
             if dealer_card_value_sum > player_card_value_sum:
                 print(f"\nYour {player_card_value_sum} is less than the DEALER's {dealer_card_value_sum}, you lose.")
             elif dealer_card_value_sum == player_card_value_sum:
@@ -94,40 +96,50 @@ def draw_card_action(character):
     temp_hand = []
     drawn_card = the_deck.draw()
     temp_card_value = drawn_card['value']
-    temp_card_sum = 0
+    temp_card_name = drawn_card['name']
     if character == "PLAYER":
         actor = "You"
         temp_hand += player_hand
         player_card_value_sum += temp_card_value
-        #temp_card_sum = player_card_value_sum
         player_hand.append(drawn_card)
     elif character == "DEALER":
+        if len(dealer_hand) == 0:
+            temp_card_name = "facedown card"     
         actor = "Dealer"
         temp_hand = dealer_hand
         dealer_card_value_sum += temp_card_value
-        #temp_card_sum = player_card_value_sum
         dealer_hand.append(drawn_card)
-    print(f"{actor} drew a {drawn_card['name']}.")
+    print(f"\n{actor} drew a {temp_card_name}.")
 
 
-def summarize_hand(character):
+def summarize_hand(character, reveal = False):
     global player_hand, dealer_hand, player_card_value_sum, dealer_card_value_sum
-    actor = ""
+    message = ""
     temp_hand = []
     temp_hand_sum_value = 0
     if character == "PLAYER":
-        actor = "Your"
         temp_hand = player_hand
         temp_hand_sum_value = player_card_value_sum
+        message = f"\nYour hand totals {temp_hand_sum_value} with: "
     elif character == "DEALER":
-        actor = "Dealer\'s"
         temp_hand = dealer_hand
-        temp_hand_sum_value = dealer_card_value_sum
-    
+        if reveal == False:
+            #print(dealer_hand[0].value)
+            fd_card = dealer_hand[0]
+            #print(fd_card)
+            temp_hand_sum_value = dealer_card_value_sum - dealer_hand[0]['value']
+            message = f"\nThe Dealer\'s hand is showing {temp_hand_sum_value} with: "
+        else:
+            message = f"\nThe Dealer\'s hand totals {dealer_card_value_sum} with: "
     # summarizes the hand for corresponding actor
-    print(f"\n{actor} hand totals {temp_hand_sum_value} with: ") 
+    print(message) 
     for card in temp_hand:
-        print(f"{card['name']}", end="  ")
+        if character == "DEALER" and reveal == False:
+            print(f"|X|", end="  ")
+            reveal = True
+        else:
+            print(f"{card['name']}", end="  ")
+
 
 def reset():
     global player_hand, player_choice
