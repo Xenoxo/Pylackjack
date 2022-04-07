@@ -1,6 +1,3 @@
-from tabnanny import check
-from matplotlib.pyplot import draw
-from numpy import empty
 from gamecontroller import GameController
 from deckofcards import DeckOfCards
 
